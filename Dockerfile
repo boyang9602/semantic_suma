@@ -38,8 +38,12 @@ RUN git clone https://github.com/ros/catkin.git &&\
 RUN sed -i 's/builder->setFp16Mode(true)/builder->setFp16Mode(false)/g' /catkin_ws/src/rangenet_lib/src/netTensorRT.cpp
 RUN cd ../ && catkin init &&\
     catkin build rangenet_lib
-RUN git clone https://github.com/PRBonn/semantic_suma.git &&\
-    sed -i 's/find_package(Boost REQUIRED COMPONENTS filesystem system)/find_package(Boost 1.65.1 REQUIRED COMPONENTS filesystem system serialization thread date_time regex timer chrono)/g' /catkin_ws/src/semantic_suma/CMakeLists.txt &&\
+
+RUN mkdir semantic_suma
+COPY . semantic_suma/
+
+# RUN git clone https://github.com/PRBonn/semantic_suma.git &&\
+RUN sed -i 's/find_package(Boost REQUIRED COMPONENTS filesystem system)/find_package(Boost 1.65.1 REQUIRED COMPONENTS filesystem system serialization thread date_time regex timer chrono)/g' /catkin_ws/src/semantic_suma/CMakeLists.txt &&\
     catkin init &&\
     catkin deps fetch &&\
     cd glow && git checkout e66d7f855514baed8dca0d1b82d7a51151c9eef3 && cd ../ &&\
